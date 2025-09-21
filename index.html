@@ -519,6 +519,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+const cursor = document.createElement("div");
+cursor.style.position = "absolute";
+cursor.style.width = "20px";
+cursor.style.height = "20px";
+cursor.style.borderRadius = "50%";
+cursor.style.background = "white";
+cursor.style.pointerEvents = "none"; 
+document.body.appendChild(cursor);
+
+window.addEventListener("message", (event) => {
+  if (event.data.type === "cursor") {
+    cursor.style.left = (event.data.x * window.innerWidth) + "px";
+    cursor.style.top = (event.data.y * window.innerHeight) + "px";
+  }
+});
+  
   const toggles = document.querySelectorAll(".toggle");
   toggles.forEach((toggle) => {
     toggle.addEventListener("change", function () {
