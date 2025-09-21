@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Menu Interface</title>
+ <style>* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.menu-container {
+  display: flex;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  max-width: 800px;
+  width: 100%;
+}
+
+.sidebar {
+  background: rgba(20, 20, 20, 0.8);
+  width: 200px;
+  padding: 20px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.logo-icon {
+  margin-bottom: 10px;
+}
+
+.logo-text {
+  color: #ff6b35;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 6px 10px;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.nav-item.active {
+  background: rgba(255, 107, 53, 0.1);
+  color: #ff6b35;
+  border: 1px solid #ff6b35;
+}
+
+.arrow {
+  color: #ff6b35;
+  font-size: 12px;
+  position: absolute;
+  right: 12px;
+}
+
+.nav-item.active .arrow {
+  color: #ff6b35;
+}
+
+.nav-item svg {
+  margin-right: 12px;
+  width: 16px;
+  height: 16px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.section {
+  background: rgba(40, 40, 40, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(50, 50, 50, 0.8);
+  color: #ff6b35;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-header svg {
+  margin-right: 8px;
+}
+
+.option-list {
+  padding: 8px 0;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  color: #ccc;
+  transition: background 0.2s ease;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.option span {
+  font-size: 14px;
+}
+
+.toggle {
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background: rgba(100, 100, 100, 0.3);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.toggle:checked {
+  background: #ff6b35;
+}
+
+.toggle::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+}
+
+.toggle:checked::before {
+  transform: translateX(20px);
+}
+
+.bind-key {
+  background: rgba(60, 60, 60, 0.8);
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.slider {
+  flex: 1;
+  height: 4px;
+  background: rgba(100, 100, 100, 0.3);
+  border-radius: 2px;
+  outline: none;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #ff6b35;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ff6b35;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.slider-value {
+  font-size: 12px;
+  color: #ff6b35;
+  min-width: 30px;
+}
+
+.dropdown {
+  background: rgba(60, 60, 60, 0.8);
+  color: #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  outline: none;
+}
+
+.dropdown option {
+  background: #3c3c3c;
+  color: #ccc;
+}
+
+.main-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 53, 0.6);
+  border-radius: 3px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 53, 0.8);
+}
+
+@media (max-width: 768px) {
+  .menu-container {
+    flex-direction: column;
+    max-width: 500px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    padding: 15px 0;
+  }
+  
+  .nav-menu {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 10px;
+  }
+  
+  .nav-item {
+    white-space: nowrap;
+    min-width: 80px;
+    justify-content: center;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .nav-item.active {
+    border-left: none;
+    border-bottom-color: #ff6b35;
+  }
+  
+  .main-content {
+    grid-template-columns: 1fr;
+    max-height: 400px;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="menu-container">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <!-- <div class="logo-icon">
+          <svg viewBox="0 0 100 100" width="60" height="60">
+            <circle cx="50" cy="50" r="45" fill="#ff6b35"/>
+            <circle cx="50" cy="50" r="35" fill="#ff8c42"/>
+            <polygon points="35,35 65,35 50,20" fill="#fff"/>
+            <circle cx="40" cy="45" r="3" fill="#000"/>
+            <circle cx="60" cy="45" r="3" fill="#000"/>
+            <path d="M35 55 Q50 65 65 55" stroke="#000" stroke-width="2" fill="none"/>
+          </svg>
+        </div> -->
+        <div class="logo-text">EnterArmy</div>
+      </div>
+      
+      <nav class="nav-menu">
+        <div class="nav-item active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7.5V9M15 11.5C15.8 11.5 16.5 12.2 16.5 13S15.8 14.5 15 14.5 13.5 13.8 13.5 13 14.2 11.5 15 11.5M5 12C5.8 12 6.5 12.7 6.5 13.5S5.8 15 5 15 3.5 14.3 3.5 13.5 4.2 12 5 12Z"/>
+          </svg>
+          Self
+          <span class="arrow">▶</span>
+        </div>
+        <div class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 4C18.2 4 20 5.8 20 8S18.2 12 16 12C13.8 12 12 10.2 12 8S13.8 4 16 4M16 13C18.7 13 24 14.3 24 17V20H8V17C8 14.3 13.3 13 16 13Z"/>
+          </svg>
+          Players
+           <span class="arrow">▶</span>
+        </div>
+        <div class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
+          </svg>
+          Combat
+          <span class="arrow">▶</span>
+        </div>
+        <div class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.92,6.01C18.72,5.42 18.16,5.01 17.5,5H6.5C5.84,5.01 5.28,5.42 5.08,6.01L3,12V20A1,1 0 0,0 4,21H5A1,1 0 0,0 6,20V19H18V20A1,1 0 0,0 19,21H20A1,1 0 0,0 21,20V12L18.92,6.01Z"/>
+          </svg>
+          Vehicle
+          <span class="arrow">▶</span>
+        </div>
+        <div class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+          </svg>
+          World
+          <span class="arrow">▶</span>
+        </div>
+        <div class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+          </svg>
+          Misc
+          <span class="arrow">▶</span>
+        </div>
+        <div class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+          </svg>
+          Config
+          <span class="arrow">▶</span>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Health Section -->
+      <div class="section">
+        <div class="section-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff6b35">
+            <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5 2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/>
+          </svg>
+          Health
+        </div>
+        <div class="option-list">
+          <div class="option">
+            <span>Revive</span>
+          </div>
+          <div class="option">
+            <span>Godmode</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>Instant Health</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>Headshot Protection</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>Fast Health Recharge</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other Section -->
+      <div class="section">
+        <div class="section-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff6b35">
+            <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+          </svg>
+          Other
+        </div>
+        <div class="option-list">
+          <div class="option">
+            <span>Add Armor</span>
+          </div>
+          <div class="option">
+            <span>Random Outfit</span>
+          </div>
+          <div class="option">
+            <span>Invisible</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>Infinite Stamina</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>No-Ragdoll Damage</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>Phase</span>
+          </div>
+          <div class="option">
+            <span>Force Drive-by</span>
+            <input type="checkbox" class="toggle">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff6b35">
+            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4V6A6,6 0 0,1 18,12A6,6 0 0,1 12,18V20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/>
+          </svg>
+          Noclip
+        </div>
+        <div class="option-list">
+          <div class="option">
+            <span>Enabled</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>Bind</span>
+            <div class="bind-key">KEY</div>
+          </div>
+          <div class="option">
+            <span>Speed</span>
+            <div class="slider-container">
+              <input type="range" class="slider" min="0" max="100" value="35">
+              <span class="slider-value">35%</span>
+            </div>
+          </div>
+          <div class="option">
+            <span>Mode</span>
+            <select class="dropdown">
+              <option>CAMERA</option>
+              <option>PLAYER</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff6b35">
+            <path d="M13.5,5.5C14.59,5.5 15.5,4.59 15.5,3.5S14.59,1.5 13.5,1.5 11.5,2.41 11.5,3.5 12.41,5.5 13.5,5.5M9.89,19.38L10.89,15L13,17V23H15V15.5L12.89,13.5L13.5,10.5C14.79,12 16.79,13 19,13V11C17.09,11 15.5,10 14.69,8.58L13.69,7.08C13.29,6.38 12.69,6 12,6S10.71,6.38 10.31,7.08L7.31,12.58C7.11,12.84 7.11,13.16 7.31,13.42L9.5,16.5L8.5,21L9.89,19.38M4,9V7H6V9H4M1,9V7H3V9H1M2,12V10H4V12H2Z"/>
+          </svg>
+          Run Boosting
+        </div>
+        <div class="option-list">
+          <div class="option">
+            <span>Enabled</span>
+            <input type="checkbox" class="toggle">
+          </div>
+          <div class="option">
+            <span>Speed</span>
+            <div class="slider-container">
+              <input type="range" class="slider" min="0" max="100" value="35">
+              <span class="slider-value">35%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sliders = document.querySelectorAll(".slider");
+  sliders.forEach((slider) => {
+    const valueDisplay = slider.parentElement.querySelector(".slider-value");
+    slider.addEventListener("input", function () {
+      valueDisplay.textContent = this.value + "%";
+      sendToLua({
+        type: "slider",
+        label: slider.parentElement.parentElement.querySelector("span").textContent,
+        value: this.value
+      });
+    });
+  });
+
+  const toggles = document.querySelectorAll(".toggle");
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("change", function () {
+      sendToLua({
+        type: "toggle",
+        label: toggle.parentElement.querySelector("span").textContent,
+        value: this.checked
+      });
+    });
+  });
+
+  const dropdowns = document.querySelectorAll(".dropdown");
+  dropdowns.forEach((dropdown) => {
+    dropdown.addEventListener("change", function () {
+      sendToLua({
+        type: "dropdown",
+        label: dropdown.parentElement.querySelector("span").textContent,
+        value: this.value
+      });
+    });
+  });
+
+  const bindKey = document.querySelector(".bind-key");
+  if (bindKey) {
+    bindKey.addEventListener("click", function () {
+      this.textContent = "Press key...";
+      this.style.background = "rgba(255, 107, 53, 0.3)";
+      const handleKeyPress = (e) => {
+        this.textContent = e.key.toUpperCase();
+        this.style.background = "rgba(60, 60, 60, 0.8)";
+        document.removeEventListener("keydown", handleKeyPress);
+        sendToLua({
+          type: "bind",
+          key: e.key.toUpperCase()
+        });
+      };
+      document.addEventListener("keydown", handleKeyPress);
+    });
+  }
+
+  const clickableOptions = document.querySelectorAll(".option");
+  clickableOptions.forEach((option) => {
+    if (!option.querySelector(".toggle") &&
+        !option.querySelector(".slider") &&
+        !option.querySelector(".dropdown") &&
+        !option.querySelector(".bind-key")) {
+      option.style.cursor = "pointer";
+      option.addEventListener("click", function () {
+        const label = this.querySelector("span").textContent;
+        this.style.background = "rgba(255, 107, 53, 0.2)";
+        setTimeout(() => {
+          this.style.background = "";
+        }, 200);
+        sendToLua({
+          type: "click",
+          label: label
+        });
+      });
+    }
+  });
+
+  window.addEventListener("message", function (event) {
+    const data = event.data;
+    if (data.type === "show") {
+      document.body.style.display = "flex";
+    } else if (data.type === "hide") {
+      document.body.style.display = "none";
+    }
+  });
+
+  function sendToLua(data) {
+    if (typeof fetch !== "undefined") {
+      fetch("https://macho_dui/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+    }
+  }
+});
+</script>
+
+
+</body>
+</html>
