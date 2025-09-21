@@ -485,11 +485,15 @@ body {
     function show(){ menu.classList.remove('hidden'); }
     function hide(){ menu.classList.add('hidden'); }
 
-    window.addEventListener('message', (event)=>{
-      const d = event.data || {};
-      if(d.type==='show') show();
-      if(d.type==='hide') hide();
-    });
+window.addEventListener('message', (event)=>{
+    const d = event.data || {};
+    if(d.type==='show') show();
+    if(d.type==='hide') hide();
+    if(d.type==='move') console.log('Move delta', d.delta);
+    if(d.type==='openSub') console.log('Open sub');
+    if(d.type==='closeSub') console.log('Close sub');
+    if(d.type==='confirm') console.log('Confirm');
+});
 
     renderTabs(); renderSubtabs(); renderPanel(); show();
   </script>
