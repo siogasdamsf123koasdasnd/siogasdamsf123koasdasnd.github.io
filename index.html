@@ -1,183 +1,387 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EnterArmy Menu</title>
   <style>
-    :root {
-      --bg: rgba(18,20,28,0.85);
-      --panel: rgba(40,42,52,0.75);
-      --accent: #2a86ff;
-      --accent2: #ff3366;
-      --text: #fff;
-      --muted: #aaa;
-      --radius: 14px;
-      --shadow: 0 20px 60px rgba(0,0,0,0.65);
-      --transition: all .25s ease;
-    }
-    * { box-sizing:border-box; margin:0; padding:0; font-family: 'Segoe UI', sans-serif; }
-    body { background:transparent; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+}
 
-    .menu {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(1);
-      width: 850px; height: 550px;
-      background: var(--bg);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      opacity: 1;
-      transition: var(--transition);
-    }
-    .menu.hidden { opacity:0; transform: translate(-50%, -50%) scale(.95); pointer-events:none; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+}
 
-    /* HEADER */
-    .header {
-      padding: 12px 20px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .brand {
-      font-size:22px;
-      font-weight:800;
-      letter-spacing:1px;
-    }
-    .brand span { color: var(--accent); }
+.menu-container {
+  display: flex;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  max-width: 800px;
+  width: 100%;
+}
 
-    /* TABS */
-    .tabs { display:flex; gap:12px; }
-    .tab {
-      padding:8px 14px;
-      background:var(--panel);
-      border-radius:10px;
-      cursor:pointer;
-      transition:var(--transition);
-      font-weight:500;
-    }
-    .tab.active { background:var(--accent); }
+.sidebar {
+  background: rgba(20, 20, 20, 0.8);
+  width: 200px;
+  padding: 20px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-    /* CONTENT */
-    .content {
-      flex:1;
-      display:flex;
-      padding:20px;
-      gap:20px;
-    }
-    .sidebar {
-      width:200px;
-      background:var(--panel);
-      border-radius:12px;
-      padding:12px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .subtab {
-      padding:10px;
-      border-radius:8px;
-      cursor:pointer;
-      transition:var(--transition);
-      font-size:14px;
-    }
-    .subtab:hover { background:rgba(255,255,255,0.05); }
-    .subtab.active { background:var(--accent); }
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
 
-    .panel {
-      flex:1;
-      background:var(--panel);
-      border-radius:12px;
-      padding:16px;
-      overflow-y:auto;
-    }
+.logo-icon {
+  margin-bottom: 10px;
+}
 
-    /* CONTROLS */
-    .control { margin-bottom:14px; }
-    .control label { display:block; margin-bottom:6px; color:var(--muted); font-size:14px; }
+.logo-text {
+  color: #ff6b35;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-    .btn {
-      background:var(--accent);
-      padding:10px 14px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      color:#fff;
-      font-weight:600;
-      transition:var(--transition);
-    }
-    .btn:hover { background:var(--accent2); }
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+}
 
-    .checkbox { display:flex; align-items:center; gap:8px; cursor:pointer; }
-    .checkbox input { transform:scale(1.3); }
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 6px 10px;
+  border-radius: 6px;
+  background: transparent;
+}
 
-    .slider { width:100%; }
-    .dropdown { width:100%; padding:8px; border-radius:6px; border:none; }
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.nav-item.active {
+  background: rgba(255, 107, 53, 0.1);
+  color: #ff6b35;
+  border: 1px solid #ff6b35;
+}
+
+.arrow {
+  color: #ff6b35;
+  font-size: 12px;
+  position: absolute;
+  right: 12px;
+}
+
+.nav-item.active .arrow {
+  color: #ff6b35;
+}
+
+.nav-item svg {
+  margin-right: 12px;
+  width: 16px;
+  height: 16px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.section {
+  background: rgba(40, 40, 40, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(50, 50, 50, 0.8);
+  color: #ff6b35;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-header svg {
+  margin-right: 8px;
+}
+
+.option-list {
+  padding: 8px 0;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  color: #ccc;
+  transition: background 0.2s ease;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.option span {
+  font-size: 14px;
+}
+
+.toggle {
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background: rgba(100, 100, 100, 0.3);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.toggle:checked {
+  background: #ff6b35;
+}
+
+.toggle::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+}
+
+.toggle:checked::before {
+  transform: translateX(20px);
+}
+
+.bind-key {
+  background: rgba(60, 60, 60, 0.8);
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.slider {
+  flex: 1;
+  height: 4px;
+  background: rgba(100, 100, 100, 0.3);
+  border-radius: 2px;
+  outline: none;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #ff6b35;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ff6b35;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.slider-value {
+  font-size: 12px;
+  color: #ff6b35;
+  min-width: 30px;
+}
+
+.dropdown {
+  background: rgba(60, 60, 60, 0.8);
+  color: #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  outline: none;
+}
+
+.dropdown option {
+  background: #3c3c3c;
+  color: #ccc;
+}
+
+.main-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 53, 0.6);
+  border-radius: 3px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 53, 0.8);
+}
+
+@media (max-width: 768px) {
+  .menu-container {
+    flex-direction: column;
+    max-width: 500px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    padding: 15px 0;
+  }
+  
+  .nav-menu {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 10px;
+  }
+  
+  .nav-item {
+    white-space: nowrap;
+    min-width: 80px;
+    justify-content: center;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .nav-item.active {
+    border-left: none;
+    border-bottom-color: #ff6b35;
+  }
+  
+  .main-content {
+    grid-template-columns: 1fr;
+    max-height: 400px;
+  }
+}
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div id="menu" class="menu hidden">
-    <!-- HEADER -->
-    <div class="header">
-      <div class="brand">Enter<span>Army</span></div>
-      <div class="tabs" id="tabs"></div>
+  <div class="menu-container hidden" id="menu">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <div class="logo-text">EnterArmy</div>
+      </div>
+      <nav class="nav-menu" id="tabs"></nav>
+      <nav class="nav-menu" id="subtabs"></nav>
     </div>
 
-    <!-- CONTENT -->
-    <div class="content">
-      <div class="sidebar" id="subtabs"></div>
-      <div class="panel" id="panel">Select option...</div>
-    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="panel"></div>
   </div>
 
   <script>
     const MODEL = {
+      currentTab: null,
+      currentSub: null,
       tabs: {
-        Player: {
-          Godmode: [
-            {type:"checkbox", label:"Enable Godmode"},
-            {type:"btn", label:"Heal Player"},
-            {type:"btn", label:"Give Armor"}
+        Self: {
+          Health: [
+            { type:'btn', label:'Revive' },
+            { type:'checkbox', label:'Godmode' },
+            { type:'checkbox', label:'Headshot Protection' },
+            { type:'slider', label:'Health Recharge', min:1, max:100, value:50 },
+            { type:'dropdown', label:'Mode', options:['Normal','Fast'] }
           ],
-          Stats: [
-            {type:"slider", label:"Speed Multiplier", min:1, max:10, value:3},
-            {type:"slider", label:"Jump Height", min:1, max:20, value:5}
+          Noclip: [
+            { type:'checkbox', label:'Enabled' },
+            { type:'slider', label:'Speed', min:1, max:100, value:35 },
+            { type:'dropdown', label:'Mode', options:['CAMERA','PLAYER'] }
           ]
         },
         Vehicle: {
-          Spawn: [
-            {type:"dropdown", label:"Select Vehicle", options:["Adder","Zentorno","Kuruma"]},
-            {type:"btn", label:"Spawn Vehicle"}
-          ],
-          Mods: [
-            {type:"checkbox", label:"Max Upgrades"},
-            {type:"checkbox", label:"Neon Lights"}
+          General: [
+            { type:'btn', label:'Spawn Car' },
+            { type:'checkbox', label:'Godmode Vehicle' }
           ]
         },
-        Weapons: {
-          Loadout: [
-            {type:"btn", label:"Give All Weapons"},
-            {type:"btn", label:"Remove Weapons"}
-          ],
-          Ammo: [
-            {type:"slider", label:"Ammo Amount", min:0, max:9999, value:500}
+        Players: {
+          General: [
+            { type:'btn', label:'Kick Player' },
+            { type:'btn', label:'Ban Player' }
           ]
         },
-        Settings: {
-          UI: [
-            {type:"checkbox", label:"Dark Mode"},
-            {type:"checkbox", label:"Show FPS"}
+        Combat: {
+          Weapons: [
+            { type:'checkbox', label:'Unlimited Ammo' },
+            { type:'checkbox', label:'No Recoil' }
+          ]
+        },
+        World: {
+          General: [
+            { type:'btn', label:'Change Weather' },
+            { type:'btn', label:'Set Time' }
+          ]
+        },
+        Misc: {
+          General: [
+            { type:'checkbox', label:'Infinite Stamina' },
+            { type:'checkbox', label:'Invisible' }
+          ]
+        },
+        Config: {
+          Settings: [
+            { type:'dropdown', label:'Theme', options:['Dark','Light'] },
+            { type:'slider', label:'Opacity', min:0, max:100, value:95 }
           ]
         }
-      },
-      currentTab: "Player",
-      currentSub: "Godmode"
+      }
     };
 
     const menu = document.getElementById('menu');
@@ -189,66 +393,91 @@
       tabsDiv.innerHTML='';
       Object.keys(MODEL.tabs).forEach(tab=>{
         const el=document.createElement('div');
-        el.className='tab'+(tab===MODEL.currentTab?' active':'');
+        el.className='nav-item'+(MODEL.currentTab===tab?' active':'');
         el.textContent=tab;
-        el.onclick=()=>{MODEL.currentTab=tab; MODEL.currentSub=Object.keys(MODEL.tabs[tab])[0]; renderTabs(); renderSubtabs(); renderPanel();}
+        const arrow=document.createElement('span');
+        arrow.className='arrow'; arrow.textContent='▶';
+        el.appendChild(arrow);
+        el.onclick=()=>{ MODEL.currentTab=tab; MODEL.currentSub=null; renderTabs(); renderSubtabs(); renderPanel(); };
         tabsDiv.appendChild(el);
       });
     }
+
     function renderSubtabs(){
       subtabsDiv.innerHTML='';
-      Object.keys(MODEL.tabs[MODEL.currentTab]).forEach(st=>{
+      if(!MODEL.currentTab) return;
+      const subs=Object.keys(MODEL.tabs[MODEL.currentTab]);
+      subs.forEach(sub=>{
         const el=document.createElement('div');
-        el.className='subtab'+(st===MODEL.currentSub?' active':'');
-        el.textContent=st;
-        el.onclick=()=>{MODEL.currentSub=st; renderSubtabs(); renderPanel();}
+        el.className='nav-item'+(MODEL.currentSub===sub?' active':'');
+        el.textContent=sub;
+        const arrow=document.createElement('span');
+        arrow.className='arrow'; arrow.textContent='▶';
+        el.appendChild(arrow);
+        el.onclick=()=>{ MODEL.currentSub=sub; renderSubtabs(); renderPanel(); };
         subtabsDiv.appendChild(el);
       });
     }
+
     function renderPanel(){
       panelDiv.innerHTML='';
-      const items=MODEL.tabs[MODEL.currentTab][MODEL.currentSub];
+      if(!MODEL.currentTab || !MODEL.currentSub) return;
+      const items = MODEL.tabs[MODEL.currentTab][MODEL.currentSub];
       items.forEach(it=>{
-        const wrap=document.createElement('div');
-        wrap.className='control';
+        const wrap = document.createElement('div');
+        wrap.className='section';
+
+        const header = document.createElement('div');
+        header.className='section-header';
+        header.textContent = it.label || 'Option';
+        wrap.appendChild(header);
+
+        const optionList = document.createElement('div');
+        optionList.className='option-list';
+
+        const option = document.createElement('div');
+        option.className='option';
+
         if(it.type==='btn'){
-          const b=document.createElement('button');
+          const b = document.createElement('button');
           b.className='btn';
-          b.textContent=it.label;
-          wrap.appendChild(b);
+          b.textContent = it.label;
+          option.appendChild(b);
         }
         if(it.type==='checkbox'){
-          const l=document.createElement('label');
-          l.className='checkbox';
-          const c=document.createElement('input');
+          const span = document.createElement('span');
+          span.textContent = it.label;
+          const c = document.createElement('input');
           c.type='checkbox';
-          l.appendChild(c);
-          l.append(it.label);
-          wrap.appendChild(l);
+          c.className='toggle';
+          option.appendChild(span);
+          option.appendChild(c);
         }
         if(it.type==='slider'){
-          const l=document.createElement('label');
-          l.textContent=it.label;
-          wrap.appendChild(l);
-          const s=document.createElement('input');
-          s.type='range';
-          s.min=it.min; s.max=it.max; s.value=it.value;
+          const span = document.createElement('span');
+          span.textContent = it.label;
+          const container = document.createElement('div');
+          container.className='slider-container';
+          const s = document.createElement('input');
+          s.type='range'; s.min=it.min; s.max=it.max; s.value=it.value;
           s.className='slider';
-          wrap.appendChild(s);
+          const val = document.createElement('span');
+          val.className='slider-value'; val.textContent = it.value + '%';
+          s.oninput = ()=>{ val.textContent = s.value+'%'; };
+          container.appendChild(s); container.appendChild(val);
+          option.appendChild(span); option.appendChild(container);
         }
         if(it.type==='dropdown'){
-          const l=document.createElement('label');
-          l.textContent=it.label;
-          wrap.appendChild(l);
-          const d=document.createElement('select');
+          const span = document.createElement('span');
+          span.textContent = it.label;
+          const d = document.createElement('select');
           d.className='dropdown';
-          it.options.forEach(op=>{
-            const o=document.createElement('option');
-            o.value=op; o.textContent=op;
-            d.appendChild(o);
-          });
-          wrap.appendChild(d);
+          it.options.forEach(op=>{ const o=document.createElement('option'); o.value=o.textContent=op; d.appendChild(o); });
+          option.appendChild(span); option.appendChild(d);
         }
+
+        optionList.appendChild(option);
+        wrap.appendChild(optionList);
         panelDiv.appendChild(wrap);
       });
     }
@@ -258,11 +487,11 @@
 
     window.addEventListener('message', (event)=>{
       const d = event.data || {};
-      if (d.type==='show') show();
-      if (d.type==='hide') hide();
+      if(d.type==='show') show();
+      if(d.type==='hide') hide();
     });
 
-    renderTabs(); renderSubtabs(); renderPanel();
+    renderTabs(); renderSubtabs(); renderPanel(); show();
   </script>
 </body>
 </html>
